@@ -12,10 +12,11 @@ add_action( 'wp', 'pmpro_sws_init_banners' );
 function pmpro_sws_init_banners() {
 	global $pmpro_pages;
 	$options = pmprosws_get_options();
-	
+
 	if ( false !== $options['discount_code_id'] &&
 				false !== $options['landing_page_post_id'] &&
 				'no' !== $options['use_banner'] &&
+				pmpro_sws_code_active() &&
 				! is_page('login') &&
 				! in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) &&
 				! is_page( intval( $options['landing_page_post_id'] ) ) &&
@@ -30,4 +31,11 @@ function pmpro_sws_init_banners() {
 			// Maybe call a function here...
 		}
 	}
+}
+
+function pmpro_sws_code_active() {
+	global $wpdb;
+	$options = pmprosws_get_options();
+	$code = $wpdb->get_results( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%s", $options['discount_code_id'] ) );
+	return ( is_array( $code ) && ! empty( $code[0] ) && ! empty( $code[0]->code ) && pmpro_checkDiscountCode( $code[0]->code ) );
 }
