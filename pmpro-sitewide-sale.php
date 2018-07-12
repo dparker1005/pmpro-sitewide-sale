@@ -17,6 +17,7 @@ define( 'PMPROSWS_DIR', dirname( __FILE__ ) );
 define( 'PMPROSWS_BASENAME', plugin_basename( __FILE__ ) );
 
 require_once PMPROSWS_DIR . '/includes/common.php';
+require_once PMPROSWS_DIR . '/includes/sitewide-sale-cpt.php';
 require_once PMPROSWS_DIR . '/includes/admin.php';
 require_once PMPROSWS_DIR . '/includes/settings.php';
 require_once PMPROSWS_DIR . '/includes/checkout.php';
