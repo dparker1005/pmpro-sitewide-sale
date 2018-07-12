@@ -62,11 +62,20 @@ function pmpro_sws_cpt_meta_box_callback( $post ) {
   );
 }
 
-function pmpro_sws_cpt_display_set_as_sitewide_sale() {
-	?>
-	<input type='checkbox' name='pmpro_sws_set_as_sitewide_sale' \>
-	<label for='pmpro_sws_set_as_sitewide_sale'>Set as Current Sitewide Sale</label>
-	<?php
+function pmpro_sws_cpt_display_set_as_sitewide_sale( $post ) {
+	$init_checked = false;
+	if ( isset( $_REQUEST['set_sitewide_sale'] ) && 'true' === $_REQUEST['set_sitewide_sale'] ) {
+		$init_checked = true;
+	} else {
+		$options = pmprosws_get_options();
+		if ( $post->ID . '' === $options['active_sitewide_sale_id'] ) {
+			$init_checked = true;
+		}
+	}
+	echo '<table class="form-table"><tr>
+	<th scope="row" valign="top"><label>' . esc_html( 'Set as Current Sitewide Sale', 'pmpro-sitewide-sale' ) . ':</label></th>
+	<td><input name="pmpro_sws_set_as_sitewide_sale" type="checkbox" ' . ( $init_checked ? 'checked' : '' ) . ' /></td>
+	</tr></table>';
 }
 
 function pmpro_sws_cpt_display_step_1($post) {
@@ -282,5 +291,13 @@ function pmpro_sws_save_cpt( $post_id, $post ) {
 	} else {
 		update_post_meta( $post_id, 'hide_on_checkout', false );
 	}
+
+	$options = pmprosws_get_options();
+	if ( isset( $_POST['pmpro_sws_set_as_sitewide_sale'] ) ) {
+		$options['active_sitewide_sale_id'] = $post_id;
+	} elseif ( $options['active_sitewide_sale_id'] === $post_id . '' ) {
+		$options['active_sitewide_sale_id'] = false;
+	}
+	pmprosws_save_options( $options );
 }
 add_action( 'save_post', 'pmpro_sws_save_cpt', 10, 2 );
