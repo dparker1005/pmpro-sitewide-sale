@@ -14,7 +14,7 @@ function pmpro_sws_init_banners() {
 	global $pmpro_pages;
 	$options              = pmprosws_get_options();
 	$active_sitewide_sale = $options['active_sitewide_sale_id'];
-	if ( false === $active_sitewide_sale || 'pmpro_sitewide_sale' !== get_post_type( $active_sitewide_sale ) || true ) {
+	if ( false === $active_sitewide_sale || 'pmpro_sitewide_sale' !== get_post_type( $active_sitewide_sale ) ) {
 		// $active_sitewide_sale not set or is a different post type.
 		return;
 	}
