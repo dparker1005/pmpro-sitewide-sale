@@ -138,6 +138,7 @@ function pmpro_sws_cpt_display_step_2( $post ) {
 }
 
 function pmpro_sws_cpt_display_step_3( $post ) {
+	// This should be optimized to use a single get_post_meta call.
 	$use_banner = esc_html( get_post_meta( $post->ID, 'use_banner', true ) );
 	if ( empty( $use_banner ) ) {
 		$use_banner = 'no';

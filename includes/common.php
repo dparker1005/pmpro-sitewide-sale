@@ -18,6 +18,12 @@ function pmprosws_get_options() {
 			'active_sitewide_sale_id' => false,
 		);
 	}
+
+	if ( ! array_key_exists( 'active_sitewide_sale_id', $options ) ) {
+		// If statement necessary in case user was using non-cpt version of sws.
+		$options['active_sitewide_sale_id'] = false;
+	}
+
 	return $options;
 }
 
